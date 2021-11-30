@@ -25,7 +25,7 @@ services:
         - /etc/localtime:/etc/localtime:ro
     ports:
         - "3000:3000"
-        - "22:22"
+        - "2222:22"
     depends_on:
         - db
 
@@ -54,7 +54,7 @@ services:
       - PMA_PASSWORD=gitea
     networks:
       - gitea
-        
+
 # Using this docker-compose configuration we will be deploying two containers which are gitea and mysql
 # In order to make the mysql container accessible from the gitea container we need to specify environment variables with the required details
 # Notice the Host is specified as "GITEA__database__HOST=db:3306" where "db" is the name of the mysql container i.e, if the name of the container is changed the host environment variable must also be updated accordingly
