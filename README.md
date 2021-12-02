@@ -6,3 +6,9 @@ Start containers using the following command, which will download and start cont
 ```bash
 docker-compose up -d
 ```
+## Configuration
+### Network
+|Name|Host|Image|
+|----|----|-----|
+|Gitea HTTP|3000|3000|
+|PhpMyAdmin HTTP|3001|80|
