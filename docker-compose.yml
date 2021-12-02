@@ -46,7 +46,7 @@ services:
     image: phpmyadmin:latest
     restart: always
     ports:
-      - 8080:80
+      - 3001:80
     environment:
       - PMA_HOST=db
       - PMA_PORT=3306
