@@ -21,7 +21,6 @@ networks:
 
 services:
   server:
-    name: gitea
     image: gitea/gitea:latest
     container_name: gitea
     environment:
@@ -47,7 +46,6 @@ services:
       - db
 
   db:
-    name: db
     image: mysql:latest
     restart: always
     environment:
@@ -61,7 +59,6 @@ services:
       - ./data/mysql:/var/lib/mysql
 
   pma:
-    name: pma
     image: phpmyadmin:latest
     restart: always
     ports:
