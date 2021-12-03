@@ -20,7 +20,7 @@ services:
     networks:
         - gitea
     volumes:
-        - ./gitea:/data
+        - ./data/gitea:/data
         - /etc/timezone:/etc/timezone:ro
         - /etc/localtime:/etc/localtime:ro
     ports:
@@ -40,7 +40,7 @@ services:
     networks:
         - gitea
     volumes:
-        - ./mysql:/var/lib/mysql
+        - ./data/mysql:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin:latest
