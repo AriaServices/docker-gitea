@@ -1,46 +1,64 @@
 version: "3"
 
 networks:
-    gitea:
-        external: false
+  giteanet:
+    name: giteanet
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.237.0/24
+
+  backend:
+    name: backend
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.239.0/24
 
 services:
   server:
     image: gitea/gitea:latest
     container_name: gitea
     environment:
-        - USER_UID=1001 # Enter the UID found from previous command output
-        - USER_GID=100  # Enter the GID found from previous command output
-        - GITEA__database__DB_TYPE=mysql
-        - GITEA__database__HOST=db:3306
-        - GITEA__database__NAME=gitea
-        - GITEA__database__USER=gitea
-        - GITEA__database__PASSWD=gitea
+      - USER_UID=1001 # Enter the UID found from previous command output
+      - USER_GID=100  # Enter the GID found from previous command output
+      - GITEA__database__DB_TYPE=mysql
+      - GITEA__database__HOST=db:3306
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=gitea
     restart: always
     networks:
-        - gitea
+      - giteanet
+      - backend
     volumes:
-        - ./data/gitea:/data
-        - /etc/timezone:/etc/timezone:ro
-        - /etc/localtime:/etc/localtime:ro
+      - ./data/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     ports:
-        - "3000:3000"
-        - "2222:22"
+      - "3000:3000"
+      - "2222:22"
     depends_on:
-        - db
+      - db
 
   db:
     image: mysql:latest
     restart: always
     environment:
-        - MYSQL_ROOT_PASSWORD=gitea
-        - MYSQL_USER=gitea
-        - MYSQL_PASSWORD=gitea
-        - MYSQL_DATABASE=gitea
+      - MYSQL_ROOT_PASSWORD=gitea
+      - MYSQL_USER=gitea
+      - MYSQL_PASSWORD=gitea
+      - MYSQL_DATABASE=gitea
     networks:
-        - gitea
+      - backend
     volumes:
-        - ./data/mysql:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -53,7 +71,8 @@ services:
       - PMA_USER=gitea
       - PMA_PASSWORD=gitea
     networks:
-      - gitea
+      - giteanet
+      - backend
 
 # Using this docker-compose configuration we will be deploying two containers which are gitea and mysql
 # In order to make the mysql container accessible from the gitea container we need to specify environment variables with the required details
